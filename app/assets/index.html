@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html xmlns:v-bind="http://www.w3.org/1999/xhtml">
+
+<head>
+    <meta charset="utf-8" />
+    <title>Index</title>
+    <link rel="stylesheet" type="text/css" href="css/frozenui.css" />
+</head>
+
+<body>
+    <div id="app">
+        <div class="navDiv">
+            <div class="navBox">
+                <input class="full center" id="page" type="number" v-model="pageNum">
+            </div>
+            <div class="navBox">
+                <select class="full" v-model="resolution">
+                    <option value="source">Source</option>
+                    <option value="540">540p</option>
+                    <option value="360">360p</option>
+                </select>
+            </div>
+            <div class="navBox">
+                <button onclick="search_j2a()" class="ui-btn-lg ui-btn-primary full">SUBMIT</button>
+            </div>
+        </div>
+
+
+        <div id="video-list">
+            <div v-for="videoInfo of videoInfos">
+                <div class="row">
+                    <div class="imgDiv" v-on:click="play(videoInfo.address, resolution)">
+                        <img v-bind:src="videoInfo.imgSrc" v-bind:data-address="videoInfo.address" />
+                    </div>
+                    <div class="infoDiv">
+                        <div class="info">{{videoInfo.like}}</div>
+                        <div class="info">{{videoInfo.view}}</div>
+                        <div class="info">{{videoInfo.rate}}</div>
+                    </div>
+                </div>
+                <div class="row">{{videoInfo.title}}</div>
+            </div>
+
+        </div>
+    </div>
+</body>
+<script src="js/vue.js"></script>
+<script>
+    let videoList = new Vue({
+        el: '#app',
+        data: {
+            videoInfos: [],
+            pageNum: 5,
+            resolution: "540"
+        },
+        methods: {
+            play: function (address, resolution) {
+                window.android.playVideo(address, resolution);
+            }
+        }
+    })
+
+
+
+    function search_j2a() {
+        const pageNum = videoList.data.pageNum;
+        videoList.data.resolution;
+        window.android.getData(pageNum);
+    }
+
+    function jsonToPage_a2j(json) {
+        const data = JSON.parse(json);
+        console.log(data);
+        videoList.data.videoInfos = data;
+        // String address, String title, String pageNum, String imgSrc, String like, String view, String rate
+    }
+
+
+</script>
+
+<style>
+    body {
+        font-size: 30px;
+    }
+
+    .full {
+        width: 100%;
+    }
+
+    .center {
+        text-align: center;
+    }
+
+    .navDiv {
+        display: flex;
+        align-items: center;
+        height: 50px;
+    }
+
+    .navBox {
+        text-align: center;
+        width: 33%;
+    }
+
+    img {
+        width: 100%;
+    }
+
+    .row {
+        display: flex;
+    }
+
+    .imgDiv {
+        width: 80%;
+    }
+
+    .infoDiv {
+        width: 20%;
+        display: flex;
+        flex-direction: column;
+        flex-wrap: nowrap;
+        justify-content: space-around;
+        align-items: stretch;
+    }
+
+    .info {
+        text-align: center;
+    }
+
+    select {
+        text-align: center;
+        text-align-last: center;
+    }
+</style>
+
+</html>
