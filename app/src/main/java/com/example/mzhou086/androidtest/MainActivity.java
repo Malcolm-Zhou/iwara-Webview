@@ -35,7 +35,7 @@ public class MainActivity extends AppCompatActivity {
         webView.getSettings().setAllowFileAccess(true);
 
         webView.addJavascriptInterface(new IndexController(), "android");
-        webView.loadUrl("file:///android_asset/index.html");
+        webView.loadUrl("file:////android_asset/index.html");
 
 
     }
