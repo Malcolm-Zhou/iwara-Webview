@@ -77,7 +77,7 @@ public class CrawlTool {
 
 
                 System.out.println(imgSrc);
-                videoInfo.setImgSrc(imgSrc);
+                videoInfo.setImgSrc("http:" + imgSrc);
 
                 videoInfo.setRate(rateStr);
                 videoInfo.setPageNum(pageNum);

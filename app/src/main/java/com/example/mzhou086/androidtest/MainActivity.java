@@ -100,6 +100,9 @@ public class MainActivity extends AppCompatActivity {
                     //msg.obj是获取handler发送信息传来的数据
                     @SuppressWarnings("unchecked")
                     String url = (String) msg.obj;
+                    if (!url.startsWith("http")) {
+                        url = "http:" + url;
+                    }
                     play(url);
 
                 }
