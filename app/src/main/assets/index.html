@@ -49,32 +49,7 @@
     let videoList = new Vue({
         el: '#app',
         data: {
-            videoInfos: [
-                {
-                    address: "asd",
-                    title: "asd",
-                    imgSrc: "asd",
-                    like: "asd",
-                    view: "asd",
-                    rate: "asd"
-                },
-                {
-                    address: "asd",
-                    title: "asd",
-                    imgSrc: "asd",
-                    like: "asd",
-                    view: "asd",
-                    rate: "asd"
-                },
-                {
-                    address: "asd",
-                    title: "asd",
-                    imgSrc: "asd",
-                    like: "asd",
-                    view: "asd",
-                    rate: "asd"
-                }
-            ],
+            videoInfos: [],
             pageNum: 5,
             resolution: "540"
         },
@@ -93,9 +68,7 @@
     }
 
     function jsonToPage_a2j(json) {
-        const data = JSON.parse(json);
-        console.log(data);
-        videoList.videoInfos = data;
+        videoList.videoInfos = json;
         // String address, String title, String pageNum, String imgSrc, String like, String view, String rate
     }
 

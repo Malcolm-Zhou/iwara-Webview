@@ -1,6 +1,8 @@
 package com.example.mzhou086.androidtest;
 
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Handler;
@@ -8,7 +10,11 @@ import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.webkit.JavascriptInterface;
+import android.webkit.JsResult;
+import android.webkit.ValueCallback;
+import android.webkit.WebChromeClient;
 import android.webkit.WebView;
+import android.widget.Toast;
 
 import com.example.mzhou086.androidtest.bean.VideoInfo;
 import com.example.mzhou086.androidtest.util.CrawlTool;
@@ -37,6 +43,24 @@ public class MainActivity extends AppCompatActivity {
         webView.addJavascriptInterface(new IndexController(), "android");
         webView.loadUrl("file:///android_asset/index.html");
 
+        webView.setWebChromeClient(new WebChromeClient() {
+            @Override
+            public boolean onJsAlert(WebView view, String url, String message, final JsResult result) {
+                AlertDialog.Builder b = new AlertDialog.Builder(MainActivity.this);
+                b.setTitle("Alert");
+                b.setMessage(message);
+                b.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        result.confirm();
+                    }
+                });
+                b.setCancelable(false);
+                b.create().show();
+                return true;
+            }
+
+        });
 
     }
 
@@ -44,8 +68,19 @@ public class MainActivity extends AppCompatActivity {
         @JavascriptInterface
         public void getData(String pageNum) {
             ArrayList<VideoInfo> crawlData = CrawlTool.getCrawlData(pageNum);
-            String json = gson.toJson(crawlData);
-            webView.loadUrl("javascript:jsonToPage_a2j('" + json + "')");
+            final String json = gson.toJson(crawlData);
+            Toast.makeText(getApplicationContext(), "解析完毕", Toast.LENGTH_SHORT).show();
+            webView.post(new Runnable() {
+                @Override
+                public void run() {
+                    webView.evaluateJavascript("jsonToPage_a2j(" + json + ")", new ValueCallback<String>() {
+                        @Override
+                        public void onReceiveValue(String value) {
+
+                        }
+                    });
+                }
+            });
         }
         @JavascriptInterface
         public void playVideo(String url, String resolution) {
