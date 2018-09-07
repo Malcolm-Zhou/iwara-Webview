@@ -17,14 +17,14 @@ import java.util.ArrayList;
 import java.util.Locale;
 
 public class CrawlTool {
-    private static final String DOMAIN = "http://www.iwara.tv";
-    private static final String DOMAIN_NSFW = "http://ecchi.iwara.tv";
+    private static final String DOMAIN = "https://www.iwara.tv";
+    private static final String DOMAIN_NSFW = "https://ecchi.iwara.tv";
     private static Gson gson = new Gson();
 
 
     public static ArrayList<VideoInfo> getCrawlData(String pageNum) {
         System.out.println("getCrawlData start");
-        String url = DOMAIN + "/videos?page=" + pageNum;
+        String url = DOMAIN_NSFW + "/videos?page=" + pageNum;
         return GetListPage(url, pageNum);
     }
 

@@ -69,7 +69,6 @@ public class MainActivity extends AppCompatActivity {
         public void getData(String pageNum) {
             ArrayList<VideoInfo> crawlData = CrawlTool.getCrawlData(pageNum);
             final String json = gson.toJson(crawlData);
-            Toast.makeText(getApplicationContext(), "解析完毕", Toast.LENGTH_SHORT).show();
             webView.post(new Runnable() {
                 @Override
                 public void run() {
@@ -82,6 +81,7 @@ public class MainActivity extends AppCompatActivity {
                 }
             });
         }
+
         @JavascriptInterface
         public void playVideo(String url, String resolution) {
             onPlayVideo(url, resolution);
@@ -100,11 +100,15 @@ public class MainActivity extends AppCompatActivity {
                     //msg.obj是获取handler发送信息传来的数据
                     @SuppressWarnings("unchecked")
                     String url = (String) msg.obj;
-                    if (!url.startsWith("http")) {
-                        url = "http:" + url;
+                    if (url.equals("TempAddressForOuterVideo")) {
+                        Toast.makeText(getApplicationContext(), "外站视频，不能播放", Toast.LENGTH_SHORT).show();
+                    } else {
+                        if (!url.startsWith("http")) {
+                            url = "https:" + url;
+                        }
+                        Toast.makeText(getApplicationContext(), url, Toast.LENGTH_LONG).show();
+                        play(url);
                     }
-                    play(url);
-
                 }
             }
         };
