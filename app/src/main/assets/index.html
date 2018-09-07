@@ -25,7 +25,11 @@
                 <button onclick="search_j2a()" class="ui-btn-lg ui-btn-primary full">SUBMIT</button>
             </div>
         </div>
-        <div>{{msg}}</div>
+        <div id="loading" class="ui-tooltips ui-tooltips-guide">
+            <div class="ui-tooltips-cnt ui-border-b center">
+                <i class="ui-icon-talk"></i>加载中...
+            </div>
+        </div>
 
 
         <div id="video-list">
@@ -58,7 +62,9 @@
         },
         methods: {
             play: function (address, resolution) {
+                document.getElementById("loading").style.setProperty("display", "block");
                 window.android.playVideo(address, resolution);
+                document.getElementById("loading").style.setProperty("display", "none");
             }
         }
     })
@@ -66,6 +72,7 @@
 
 
     function search_j2a() {
+        document.getElementById("loading").style.setProperty("display", "block");
         const pageNum = videoList.pageNum;
         window.android.getData(pageNum);
         // videoList.videoInfos = [{
@@ -79,13 +86,11 @@
     }
 
     function jsonToPage_a2j(json) {
+        document.getElementById("loading").style.setProperty("display", "none");
         videoList.videoInfos = json;
         // String address, String title, String pageNum, String imgSrc, String like, String view, String rate
     }
 
-    function showMsg(str) {
-        videoList.msg = str;
-    }
 
 
 
@@ -93,7 +98,7 @@
 
 <style>
     body {
-        font-size: 30px;
+        font-size: 20px;
     }
 
     .full {
@@ -143,6 +148,10 @@
     select {
         text-align: center;
         text-align-last: center;
+    }
+
+    #loading {
+        display: none;
     }
 </style>
 
